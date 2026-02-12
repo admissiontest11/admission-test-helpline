@@ -179,6 +179,123 @@
             color: #721c24;
         }
         
+        /* প্রশ্ন ব্যাংক ভিউ স্টাইল */
+        .question-bank-view {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+        
+        .view-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+        }
+        
+        .view-btn {
+            padding: 12px 25px;
+            border: 2px solid #667eea;
+            background: transparent;
+            color: #667eea;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+        }
+        
+        .view-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .view-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .question-item {
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        .options-list {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .option-item {
+            padding: 12px 20px;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        
+        .correct-answer {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #d4edda;
+            border-radius: 8px;
+            color: #155724;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #fff3cd;
+            border-radius: 8px;
+            color: #856404;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .chapter-title {
+            font-size: 28px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .question-count {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 16px;
+        }
+        
         /* রেসপনসিভ */
         @media (max-width: 768px) {
             .breadcrumb {
@@ -187,6 +304,15 @@
             
             .subject-grid, .chapter-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .view-controls {
+                flex-direction: column;
+            }
+            
+            .view-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -206,6 +332,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        /* এনসিডেন্টাল স্টাইল */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -245,12 +376,15 @@
         class QuestionBankManager {
             constructor() {
                 // স্টেট ম্যানেজমেন্ট
-                this.currentView = 'classes'; // classes, subjects, chapters, quiz
+                this.currentView = 'classes'; // classes, subjects, chapters, quiz, questionBank
                 this.selectedClass = null;
                 this.selectedSubject = null;
                 this.selectedSubjectName = null;
                 this.selectedChapter = null;
                 this.selectedChapterName = null;
+                
+                // প্রশ্ন ব্যাংক ভিউ মোড
+                this.showAnswers = false; // ডিফল্ট: উত্তর ছাড়া
                 
                 // কুইজ স্টেট
                 this.questions = [];
@@ -402,13 +536,17 @@
                         </h2>
                         <div class="chapter-grid">
                             ${chapters.map(chapter => `
-                                <div class="chapter-card" onclick="qbManager.selectChapter('${chapter.folder}', '${chapter.name}')">
+                                <div class="chapter-card">
                                     <h3>${chapter.icon} ${chapter.name}</h3>
                                     <p><i class="fas fa-question-circle"></i> ${chapter.questions}+ MCQ</p>
-                                    <p style="color: #667eea;"><i class="fas fa-folder"></i> অধ্যায়</p>
-                                    <button class="start-btn">
-                                        পরীক্ষা দিন <i class="fas fa-pen"></i>
-                                    </button>
+                                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                        <button class="start-btn" onclick="qbManager.viewQuestions('${chapter.folder}', '${chapter.name}')" style="margin-top: 0;">
+                                            <i class="fas fa-eye"></i> প্রশ্ন দেখুন
+                                        </button>
+                                        <button class="start-btn" onclick="qbManager.startExam('${chapter.folder}', '${chapter.name}')" style="margin-top: 0; background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+                                            <i class="fas fa-pen"></i> পরীক্ষা দিন
+                                        </button>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
@@ -417,20 +555,19 @@
             }
             
             // ============================================
-            // ৪. চ্যাপ্টার সিলেক্ট করার পর MCQ লোড
+            // ৪. প্রশ্ন দেখার ভিউ
             // ============================================
-            async selectChapter(folder, name) {
+            async viewQuestions(folder, name) {
                 this.selectedChapter = folder;
                 this.selectedChapterName = name;
-                this.currentView = 'quiz';
+                this.currentView = 'questionBank';
                 
                 // MCQ লোড করার চেষ্টা
-                await this.loadMCQ();
+                await this.loadQuestionsForView();
             }
             
-            async loadMCQ() {
+            async loadQuestionsForView() {
                 try {
-                    // ফাইল পাথ: data/ssc/বাংলা_১ম_পত্র/বই_পড়া/mcq.json
                     const filePath = `data/${this.selectedClass}/${this.selectedSubject}/${this.selectedChapter}/mcq.json`;
                     
                     console.log('লোড হচ্ছে:', filePath);
@@ -443,17 +580,13 @@
                     
                     const data = await response.json();
                     this.questions = data.questions || [];
-                    this.currentQuestionIndex = 0;
-                    this.score = 0;
-                    this.timeLeft = 1800;
                     
-                    // কুইজ ইন্টারফেস দেখান
-                    this.showQuiz();
+                    // প্রশ্ন ব্যাংক ভিউ দেখান
+                    this.showQuestionBank();
                     
                 } catch (error) {
                     console.error('MCQ লোড করতে সমস্যা:', error);
                     
-                    // এরর মেসেজ দেখান
                     this.contentEl.innerHTML = `
                         <header>
                             <div class="breadcrumb">
@@ -474,9 +607,6 @@
                             <i class="fas fa-exclamation-circle" style="font-size: 80px; color: #f39c12; margin-bottom: 20px;"></i>
                             <h2 style="color: #333; margin-bottom: 15px;">MCQ প্রশ্ন পাওয়া যায়নি!</h2>
                             <p style="color: #666; margin-bottom: 20px;">এই অধ্যায়ের জন্য এখনও কোন MCQ যোগ করা হয়নি।</p>
-                            <p style="color: #999; margin-bottom: 30px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
-                                <i class="fas fa-folder"></i> ফাইল পাথ: ${filePath}
-                            </p>
                             <button class="start-btn" onclick="qbManager.showChapters()" style="width: auto; padding: 15px 40px;">
                                 <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
                             </button>
@@ -485,11 +615,172 @@
                 }
             }
             
+            showQuestionBank() {
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedChapterName}</span>
+                        </div>
+                        <div class="header-info">
+                            <button class="back-btn" onclick="qbManager.showChapters()">
+                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <div class="question-bank-view">
+                        <div class="chapter-header">
+                            <div class="chapter-title">
+                                <i class="fas fa-book-open"></i> ${this.selectedChapterName}
+                            </div>
+                            <div class="question-count">
+                                <i class="fas fa-question-circle"></i> মোট ${this.questions.length}টি প্রশ্ন
+                            </div>
+                        </div>
+                        
+                        <div class="view-controls">
+                            <button class="view-btn ${!this.showAnswers ? 'active' : ''}" onclick="qbManager.toggleAnswers(false)">
+                                <i class="fas fa-eye-slash"></i> উত্তর ছাড়া দেখুন
+                            </button>
+                            <button class="view-btn ${this.showAnswers ? 'active' : ''}" onclick="qbManager.toggleAnswers(true)">
+                                <i class="fas fa-eye"></i> উত্তর সহ দেখুন
+                            </button>
+                        </div>
+                        
+                        <div id="questionsContainer">
+                            ${this.renderAllQuestions()}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            toggleAnswers(show) {
+                this.showAnswers = show;
+                const container = document.getElementById('questionsContainer');
+                if (container) {
+                    container.innerHTML = this.renderAllQuestions();
+                    
+                    // বাটন active স্টেট আপডেট
+                    document.querySelectorAll('.view-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    if (show) {
+                        document.querySelectorAll('.view-btn')[1].classList.add('active');
+                    } else {
+                        document.querySelectorAll('.view-btn')[0].classList.add('active');
+                    }
+                }
+            }
+            
+            renderAllQuestions() {
+                if (this.questions.length === 0) {
+                    return '<p style="text-align: center; color: #999; padding: 40px;">কোনো প্রশ্ন নেই</p>';
+                }
+                
+                return this.questions.map((q, index) => `
+                    <div class="question-item">
+                        <div class="question-text">
+                            <span style="display: inline-block; background: #667eea; color: white; width: 30px; height: 30px; text-align: center; line-height: 30px; border-radius: 50%; margin-right: 15px;">
+                                ${index + 1}
+                            </span>
+                            ${q.question}
+                        </div>
+                        
+                        <div class="options-list">
+                            ${q.options.map((opt, optIndex) => `
+                                <div class="option-item" style="${this.showAnswers && optIndex === q.correct ? 'background: #d4edda; border-color: #28a745;' : ''}">
+                                    ${String.fromCharCode(65 + optIndex)}. ${opt}
+                                    ${this.showAnswers && optIndex === q.correct ? ' ✓' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${this.showAnswers && q.correct !== undefined ? `
+                            <div class="correct-answer">
+                                <i class="fas fa-check-circle"></i>
+                                সঠিক উত্তর: ${String.fromCharCode(65 + q.correct)}
+                            </div>
+                        ` : ''}
+                        
+                        ${this.showAnswers && q.explanation ? `
+                            <div class="explanation">
+                                <i class="fas fa-info-circle"></i>
+                                ব্যাখ্যা: ${q.explanation}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+            
             // ============================================
-            // ৫. কুইজ ইন্টারফেস
+            // ৫. পরীক্ষা শুরু
             // ============================================
+            async startExam(folder, name) {
+                this.selectedChapter = folder;
+                this.selectedChapterName = name;
+                this.currentView = 'quiz';
+                
+                await this.loadMCQ();
+            }
+            
+            async loadMCQ() {
+                try {
+                    const filePath = `data/${this.selectedClass}/${this.selectedSubject}/${this.selectedChapter}/mcq.json`;
+                    
+                    console.log('লোড হচ্ছে:', filePath);
+                    
+                    const response = await fetch(filePath);
+                    
+                    if (!response.ok) {
+                        throw new Error('MCQ ফাইল পাওয়া যায়নি');
+                    }
+                    
+                    const data = await response.json();
+                    this.questions = data.questions || [];
+                    this.currentQuestionIndex = 0;
+                    this.score = 0;
+                    this.timeLeft = 1800;
+                    
+                    this.showQuiz();
+                    
+                } catch (error) {
+                    console.error('MCQ লোড করতে সমস্যা:', error);
+                    
+                    this.contentEl.innerHTML = `
+                        <header>
+                            <div class="breadcrumb">
+                                <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                                <i class="fas fa-chevron-right"></i>
+                                <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                                <i class="fas fa-chevron-right"></i>
+                                <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            </div>
+                            <div class="header-info">
+                                <button class="back-btn" onclick="qbManager.showChapters()">
+                                    <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 80px; color: #f39c12; margin-bottom: 20px;"></i>
+                            <h2 style="color: #333; margin-bottom: 15px;">MCQ প্রশ্ন পাওয়া যায়নি!</h2>
+                            <p style="color: #666; margin-bottom: 20px;">এই অধ্যায়ের জন্য এখনও কোন MCQ যোগ করা হয়নি।</p>
+                            <button class="start-btn" onclick="qbManager.showChapters()" style="width: auto; padding: 15px 40px;">
+                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            
             showQuiz() {
-                // টাইমার শুরু
                 this.startTimer();
                 
                 this.contentEl.innerHTML = `
@@ -565,15 +856,12 @@
                 const q = this.questions[this.currentQuestionIndex];
                 const options = document.querySelectorAll('.option');
                 
-                // অপশন ডিজেবল
                 options.forEach(opt => opt.style.pointerEvents = 'none');
                 
-                // সঠিক উত্তর দেখান
                 if (q.correct !== undefined && options[q.correct]) {
                     options[q.correct].classList.add('correct');
                 }
                 
-                // উত্তর চেক
                 if (selectedIndex === q.correct) {
                     this.score += 4;
                     this.updateProgress(true);
@@ -585,10 +873,8 @@
                     this.updateProgress(false);
                 }
                 
-                // স্কোর আপডেট
                 document.getElementById('scoreDisplay').innerHTML = `<i class="fas fa-star"></i> স্কোর: ${this.score}`;
                 
-                // পরবর্তী প্রশ্ন
                 setTimeout(() => {
                     if (this.currentQuestionIndex + 1 < this.questions.length) {
                         this.currentQuestionIndex++;
@@ -662,13 +948,11 @@
             endQuiz() {
                 clearInterval(this.timer);
                 
-                // টেস্ট কাউন্ট আপডেট
                 let progress = localStorage.getItem('admissionTestHelpline');
                 progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
                 progress.tests = (progress.tests || 0) + 1;
                 localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
                 
-                // পার্সেন্টেজ ক্যালকুলেট
                 const percentage = this.questions.length > 0 
                     ? Math.round((this.score / (this.questions.length * 4)) * 100) 
                     : 0;
