@@ -6,6 +6,208 @@
     <title>প্রশ্ন ব্যাংক - Admission Test Helpline</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ব্রেডক্রাম্ব স্টাইল */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            color: white;
+            font-size: 18px;
+            flex-wrap: wrap;
+        }
+        
+        .breadcrumb a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        
+        .breadcrumb a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb i {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* ব্যাক বাটন */
+        .back-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        
+        .back-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateX(-5px);
+        }
+        
+        /* গ্রিড স্টাইল */
+        .subject-grid, .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        /* কার্ড স্টাইল */
+        .subject-card, .chapter-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-card:hover, .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-color: #667eea;
+        }
+        
+        .subject-card h3, .chapter-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        .subject-card p, .chapter-card p {
+            color: #666;
+            margin-bottom: 8px;
+        }
+        
+        /* স্টার্ট বাটন */
+        .start-btn {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+        
+        /* কুইজ প্যানেল */
+        .quiz-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 900px;
+            margin: 20px auto;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        /* টাইমার ও স্কোর */
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        
+        /* অপশন স্টাইল */
+        .option {
+            padding: 18px 25px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 18px;
+        }
+        
+        .option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        /* রেসপনসিভ */
+        @media (max-width: 768px) {
+            .breadcrumb {
+                font-size: 16px;
+            }
+            
+            .subject-grid, .chapter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* হেডার ইনফো */
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stats-badge {
+            background: rgba(255,255,255,0.15);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="sidebar">
@@ -31,85 +233,580 @@
         </nav>
     </div>
 
-    <div class="main-content">
-        <header>
-            <h1>প্রশ্ন ব্যাংক</h1>
-            <div class="user-info">
-                <span>সকল বিষয়ের MCQ</span>
-            </div>
-        </header>
-
-        <!-- SSC সেকশন -->
-        <div class="section">
-            <h2><i class="fas fa-graduation-cap"></i> SSC (মাধ্যমিক)</h2>
-            <div class="subject-grid" id="ssc-bank"></div>
-        </div>
-
-        <!-- HSC সেকশন -->
-        <div class="section">
-            <h2><i class="fas fa-university"></i> HSC (উচ্চ মাধ্যমিক)</h2>
-            <div class="subject-grid" id="hsc-bank"></div>
-        </div>
+    <div class="main-content" id="main-content">
+        <!-- ডাইনামিক কন্টেন্ট JS এর মাধ্যমে লোড হবে -->
     </div>
 
     <script>
-        // SSC সাবজেক্ট লিস্ট
-const sscSubjects = [
-    { name: 'বাংলা ১ম পত্র', file: 'bangla_1st.json', icon: '📚', questions: '৫০০+' },
-    { name: 'বাংলা ২য় পত্র', file: 'bangla_2nd.json', icon: '📚', questions: '৫০০+' },
-    { name: 'English 1st Paper', file: 'english_1st.json', icon: '📖', questions: '৪০০+' },
-    { name: 'English 2nd Paper', file: 'english_2nd.json', icon: '📖', questions: '৪৫০+' },
-    { name: 'গণিত', file: 'math.json', icon: '🧮', questions: '৬০০+' },
-    { name: 'বিজ্ঞান', file: 'science.json', icon: '🔬', questions: '৫৫০+' },
-    { name: 'বাংলাদেশ ও বিশ্বপরিচয়', file: 'bd_global.json', icon: '🌍', questions: '৪০০+' },
-    { name: 'বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা', file: 'bd_history.json', icon: '🏛️', questions: '৪৫০+' },
-    { name: 'ভূগোল ও পরিবেশ', file: 'geography.json', icon: '🗺️', questions: '৪০০+' },
-    { name: 'অর্থনীতি', file: 'economics.json', icon: '💰', questions: '৩৫০+' },
-    { name: 'কৃষি শিক্ষা', file: 'agriculture.json', icon: '🌾', questions: '৩৫০+' },
-    { name: 'জীববিজ্ঞান', file: 'biology.json', icon: '🧬', questions: '৪৫০+' },
-    { name: 'তথ্য ও যোগাযোগ প্রযুক্তি', file: 'ict.json', icon: '💻', questions: '৪০০+' },
-    { name: 'পৌরনীতি ও নাগরিকতা', file: 'civics.json', icon: '⚖️', questions: '৩৫০+' }
-
-        ];
-
-        // HSC সাবজেক্ট লিস্ট
-        const hscSubjects = [
-            { name: 'পদার্থবিজ্ঞান', file: 'physics_1st.json', icon: '⚡', questions: '১২০+' },
-            { name: 'রসায়ন', file: 'chemistry_1st.json', icon: '🧪', questions: '১২০+' },
-            { name: 'জীববিজ্ঞান', file: 'biology_1st.json', icon: '🧬', questions: '১০০+' },
-            { name: 'উচ্চতর গণিত', file: 'higher_math_1st.json', icon: '📐', questions: '৯০+' }
-        ];
-
-        // পেজ লোড হওয়ার পর
-        document.addEventListener('DOMContentLoaded', function() {
-            displaySubjects('ssc-bank', sscSubjects, 'ssc');
-            displaySubjects('hsc-bank', hscSubjects, 'hsc');
-        });
-
-        // সাবজেক্ট দেখান
-        function displaySubjects(containerId, subjects, className) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            
-            container.innerHTML = subjects.map(subject => `
-                <div class="subject-card" onclick="startQuiz('${subject.file}', '${className}')">
-                    <h3>${subject.icon} ${subject.name}</h3>
-                    <p>${subject.questions} টি প্রশ্ন</p>
-                    <button style="margin-top:15px; padding:8px 20px; background:#667eea; color:white; border:none; border-radius:5px; cursor:pointer;">
-                        শুরু করুন →
-                    </button>
-                </div>
-            `).join('');
-        }
-
-        // কুইজ শুরু
-        function startQuiz(fileName, className) {
-            if (!fileName) {
-                alert('ফাইলের নাম পাওয়া যায়নি!');
-                return;
+        // ============================================
+        // প্রশ্ন ব্যাংক ম্যানেজার - ফোল্ডার ভিত্তিক স্ট্রাকচার
+        // ============================================
+        
+        class QuestionBankManager {
+            constructor() {
+                // স্টেট ম্যানেজমেন্ট
+                this.currentView = 'classes'; // classes, subjects, chapters, quiz
+                this.selectedClass = null;
+                this.selectedSubject = null;
+                this.selectedSubjectName = null;
+                this.selectedChapter = null;
+                this.selectedChapterName = null;
+                
+                // কুইজ স্টেট
+                this.questions = [];
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.timer = null;
+                this.timeLeft = 1800; // 30 মিনিট
+                
+                // লোকাল স্টোরেজ থেকে প্রগ্রেস লোড
+                this.loadProgress();
+                
+                // ইনিশিয়ালাইজ
+                this.init();
             }
-            window.location.href = `self-exam.html?file=${fileName}&class=${className}`;
+            
+            // মেইন কন্টেন্ট এলিমেন্ট
+            get contentEl() {
+                return document.getElementById('main-content');
+            }
+            
+            // ============================================
+            // ১. ক্লাস সিলেক্ট ভিউ
+            // ============================================
+            init() {
+                this.showClasses();
+            }
+            
+            showClasses() {
+                this.currentView = 'classes';
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <h1>📚 প্রশ্ন ব্যাংক</h1>
+                        <div class="user-info">
+                            <span class="stats-badge">
+                                <i class="fas fa-database"></i> ${this.getTotalQuestions()} টি প্রশ্ন
+                            </span>
+                        </div>
+                    </header>
+
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="color: white; margin-bottom: 20px; font-size: 28px;">
+                            <i class="fas fa-graduation-cap"></i> আপনার ক্লাস নির্বাচন করুন
+                        </h2>
+                        <div class="subject-grid">
+                            <div class="subject-card" onclick="qbManager.selectClass('ssc')">
+                                <div style="text-align: center;">
+                                    <i class="fas fa-school" style="font-size: 64px; color: #667eea; margin-bottom: 20px;"></i>
+                                    <h3 style="font-size: 32px; margin-bottom: 10px;">SSC</h3>
+                                    <p style="font-size: 18px; color: #666;">মাধ্যমিক শিক্ষার্থীদের জন্য</p>
+                                    <p style="color: #667eea; margin-top: 20px; font-size: 16px;">
+                                        <i class="fas fa-book-open"></i> ১৪টি বিষয়
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="subject-card" onclick="qbManager.selectClass('hsc')">
+                                <div style="text-align: center;">
+                                    <i class="fas fa-university" style="font-size: 64px; color: #764ba2; margin-bottom: 20px;"></i>
+                                    <h3 style="font-size: 32px; margin-bottom: 10px;">HSC</h3>
+                                    <p style="font-size: 18px; color: #666;">উচ্চ মাধ্যমিক শিক্ষার্থীদের জন্য</p>
+                                    <p style="color: #764ba2; margin-top: 20px; font-size: 16px;">
+                                        <i class="fas fa-book-open"></i> ৮টি বিষয়
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ২. ক্লাস সিলেক্ট করার পর সাবজেক্ট লিস্ট
+            // ============================================
+            selectClass(className) {
+                this.selectedClass = className;
+                this.currentView = 'subjects';
+                this.showSubjects();
+            }
+            
+            showSubjects() {
+                const subjects = this.getSubjectsByClass(this.selectedClass);
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedClass.toUpperCase()}</span>
+                        </div>
+                        <div class="header-info">
+                            <button class="back-btn" onclick="qbManager.showClasses()">
+                                <i class="fas fa-arrow-left"></i> ক্লাস পরিবর্তন
+                            </button>
+                        </div>
+                    </header>
+
+                    <div style="margin-bottom: 30px;">
+                        <h2 style="color: white; margin-bottom: 20px;">
+                            <i class="fas fa-book-open"></i> ${this.selectedClass.toUpperCase()} - বিষয়সমূহ
+                        </h2>
+                        <div class="subject-grid">
+                            ${subjects.map(subject => `
+                                <div class="subject-card" onclick="qbManager.selectSubject('${subject.folder}', '${subject.name}')">
+                                    <h3>${subject.icon} ${subject.name}</h3>
+                                    <p><i class="fas fa-folder"></i> ${subject.chapters}টি অধ্যায়</p>
+                                    <p style="color: #27ae60;"><i class="fas fa-question-circle"></i> ${subject.total_questions}+ প্রশ্ন</p>
+                                    <button class="start-btn">
+                                        অধ্যায় দেখুন <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ৩. সাবজেক্ট সিলেক্ট করার পর চ্যাপ্টার লিস্ট
+            // ============================================
+            selectSubject(folder, name) {
+                this.selectedSubject = folder;
+                this.selectedSubjectName = name;
+                this.currentView = 'chapters';
+                this.showChapters();
+            }
+            
+            showChapters() {
+                const chapters = this.getChaptersBySubject(this.selectedSubject);
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedSubjectName}</span>
+                        </div>
+                        <div class="header-info">
+                            <button class="back-btn" onclick="qbManager.showSubjects()">
+                                <i class="fas fa-arrow-left"></i> বিষয় পরিবর্তন
+                            </button>
+                        </div>
+                    </header>
+
+                    <div style="margin-bottom: 30px;">
+                        <h2 style="color: white; margin-bottom: 20px;">
+                            <i class="fas fa-list"></i> ${this.selectedSubjectName} - অধ্যায়সমূহ
+                        </h2>
+                        <div class="chapter-grid">
+                            ${chapters.map(chapter => `
+                                <div class="chapter-card" onclick="qbManager.selectChapter('${chapter.folder}', '${chapter.name}')">
+                                    <h3>${chapter.icon} ${chapter.name}</h3>
+                                    <p><i class="fas fa-question-circle"></i> ${chapter.questions}+ MCQ</p>
+                                    <p style="color: #667eea;"><i class="fas fa-folder"></i> অধ্যায়</p>
+                                    <button class="start-btn">
+                                        পরীক্ষা দিন <i class="fas fa-pen"></i>
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ৪. চ্যাপ্টার সিলেক্ট করার পর MCQ লোড
+            // ============================================
+            async selectChapter(folder, name) {
+                this.selectedChapter = folder;
+                this.selectedChapterName = name;
+                this.currentView = 'quiz';
+                
+                // MCQ লোড করার চেষ্টা
+                await this.loadMCQ();
+            }
+            
+            async loadMCQ() {
+                try {
+                    // ফাইল পাথ: data/ssc/বাংলা_১ম_পত্র/বই_পড়া/mcq.json
+                    const filePath = `data/${this.selectedClass}/${this.selectedSubject}/${this.selectedChapter}/mcq.json`;
+                    
+                    console.log('লোড হচ্ছে:', filePath);
+                    
+                    const response = await fetch(filePath);
+                    
+                    if (!response.ok) {
+                        throw new Error('MCQ ফাইল পাওয়া যায়নি');
+                    }
+                    
+                    const data = await response.json();
+                    this.questions = data.questions || [];
+                    this.currentQuestionIndex = 0;
+                    this.score = 0;
+                    this.timeLeft = 1800;
+                    
+                    // কুইজ ইন্টারফেস দেখান
+                    this.showQuiz();
+                    
+                } catch (error) {
+                    console.error('MCQ লোড করতে সমস্যা:', error);
+                    
+                    // এরর মেসেজ দেখান
+                    this.contentEl.innerHTML = `
+                        <header>
+                            <div class="breadcrumb">
+                                <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                                <i class="fas fa-chevron-right"></i>
+                                <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                                <i class="fas fa-chevron-right"></i>
+                                <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            </div>
+                            <div class="header-info">
+                                <button class="back-btn" onclick="qbManager.showChapters()">
+                                    <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                                </button>
+                            </div>
+                        </header>
+                        
+                        <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
+                            <i class="fas fa-exclamation-circle" style="font-size: 80px; color: #f39c12; margin-bottom: 20px;"></i>
+                            <h2 style="color: #333; margin-bottom: 15px;">MCQ প্রশ্ন পাওয়া যায়নি!</h2>
+                            <p style="color: #666; margin-bottom: 20px;">এই অধ্যায়ের জন্য এখনও কোন MCQ যোগ করা হয়নি।</p>
+                            <p style="color: #999; margin-bottom: 30px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                                <i class="fas fa-folder"></i> ফাইল পাথ: ${filePath}
+                            </p>
+                            <button class="start-btn" onclick="qbManager.showChapters()" style="width: auto; padding: 15px 40px;">
+                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+            
+            // ============================================
+            // ৫. কুইজ ইন্টারফেস
+            // ============================================
+            showQuiz() {
+                // টাইমার শুরু
+                this.startTimer();
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedChapterName}</span>
+                        </div>
+                        <div class="header-info">
+                            <span class="timer" id="timerDisplay">
+                                <i class="fas fa-clock"></i> 30:00
+                            </span>
+                            <span class="score" id="scoreDisplay">
+                                <i class="fas fa-star"></i> স্কোর: 0
+                            </span>
+                            <button class="back-btn" onclick="qbManager.endQuiz()">
+                                <i class="fas fa-times"></i> পরীক্ষা শেষ
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="quiz-panel">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                            <div style="font-size: 20px; color: #333; background: #f8f9fa; padding: 10px 20px; border-radius: 50px;">
+                                <i class="fas fa-question-circle" style="color: #667eea;"></i>
+                                প্রশ্ন ${this.currentQuestionIndex + 1}/${this.questions.length}
+                            </div>
+                            <div style="font-size: 18px; color: #27ae60; background: #f8f9fa; padding: 10px 20px; border-radius: 50px;">
+                                <i class="fas fa-check-circle"></i> +4 | <span style="color: #e74c3c;">-1</span>
+                            </div>
+                        </div>
+
+                        <div id="questionContainer">
+                            ${this.renderCurrentQuestion()}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderCurrentQuestion() {
+                if (this.questions.length === 0) {
+                    return '<p style="text-align: center; color: #999;">কোনো প্রশ্ন নেই</p>';
+                }
+                
+                const q = this.questions[this.currentQuestionIndex];
+                
+                return `
+                    <div>
+                        <h3 style="font-size: 24px; color: #333; margin-bottom: 30px; line-height: 1.6;">
+                            ${this.currentQuestionIndex + 1}. ${q.question}
+                        </h3>
+                        
+                        <div style="display: grid; gap: 15px;">
+                            ${q.options.map((opt, index) => `
+                                <div class="option" onclick="qbManager.checkAnswer(${index})">
+                                    ${String.fromCharCode(65 + index)}. ${opt}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ৬. উত্তর চেক করা
+            // ============================================
+            checkAnswer(selectedIndex) {
+                const q = this.questions[this.currentQuestionIndex];
+                const options = document.querySelectorAll('.option');
+                
+                // অপশন ডিজেবল
+                options.forEach(opt => opt.style.pointerEvents = 'none');
+                
+                // সঠিক উত্তর দেখান
+                if (q.correct !== undefined && options[q.correct]) {
+                    options[q.correct].classList.add('correct');
+                }
+                
+                // উত্তর চেক
+                if (selectedIndex === q.correct) {
+                    this.score += 4;
+                    this.updateProgress(true);
+                } else {
+                    if (options[selectedIndex]) {
+                        options[selectedIndex].classList.add('wrong');
+                    }
+                    this.score -= 1;
+                    this.updateProgress(false);
+                }
+                
+                // স্কোর আপডেট
+                document.getElementById('scoreDisplay').innerHTML = `<i class="fas fa-star"></i> স্কোর: ${this.score}`;
+                
+                // পরবর্তী প্রশ্ন
+                setTimeout(() => {
+                    if (this.currentQuestionIndex + 1 < this.questions.length) {
+                        this.currentQuestionIndex++;
+                        const questionContainer = document.getElementById('questionContainer');
+                        if (questionContainer) {
+                            questionContainer.innerHTML = this.renderCurrentQuestion();
+                            document.querySelector('.quiz-panel div:first-child div:first-child').innerHTML = 
+                                `<i class="fas fa-question-circle" style="color: #667eea;"></i> প্রশ্ন ${this.currentQuestionIndex + 1}/${this.questions.length}`;
+                        }
+                    } else {
+                        this.endQuiz();
+                    }
+                }, 1500);
+            }
+            
+            // ============================================
+            // ৭. টাইমার
+            // ============================================
+            startTimer() {
+                if (this.timer) {
+                    clearInterval(this.timer);
+                }
+                
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    
+                    const minutes = Math.floor(this.timeLeft / 60);
+                    const seconds = this.timeLeft % 60;
+                    
+                    const timerDisplay = document.getElementById('timerDisplay');
+                    if (timerDisplay) {
+                        timerDisplay.innerHTML = `<i class="fas fa-clock"></i> ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                    
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timer);
+                        this.endQuiz();
+                    }
+                }, 1000);
+            }
+            
+            // ============================================
+            // ৮. প্রগ্রেস আপডেট
+            // ============================================
+            updateProgress(isCorrect) {
+                let progress = localStorage.getItem('admissionTestHelpline');
+                progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
+                
+                progress.solved = (progress.solved || 0) + 1;
+                if (isCorrect) {
+                    progress.correct = (progress.correct || 0) + 1;
+                }
+                
+                localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
+            }
+            
+            loadProgress() {
+                const progress = localStorage.getItem('admissionTestHelpline');
+                if (progress) {
+                    // প্রগ্রেস লোড করা হল
+                }
+            }
+            
+            getTotalQuestions() {
+                return '১০,০০০+';
+            }
+            
+            // ============================================
+            // ৯. কুইজ শেষ
+            // ============================================
+            endQuiz() {
+                clearInterval(this.timer);
+                
+                // টেস্ট কাউন্ট আপডেট
+                let progress = localStorage.getItem('admissionTestHelpline');
+                progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
+                progress.tests = (progress.tests || 0) + 1;
+                localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
+                
+                // পার্সেন্টেজ ক্যালকুলেট
+                const percentage = this.questions.length > 0 
+                    ? Math.round((this.score / (this.questions.length * 4)) * 100) 
+                    : 0;
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                        </div>
+                        <div class="header-info">
+                            <button class="back-btn" onclick="qbManager.showChapters()">
+                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
+                        <div style="font-size: 100px; margin-bottom: 20px;">
+                            ${percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '📚'}
+                        </div>
+                        <h1 style="color: #333; margin-bottom: 15px; font-size: 36px;">
+                            ${percentage >= 80 ? 'অভিনন্দন!' : 'পরীক্ষা শেষ!'}
+                        </h1>
+                        <p style="color: #666; font-size: 20px; margin-bottom: 40px;">
+                            ${percentage >= 80 ? 'চমৎকার ফলাফল!' : 'আরও অনুশীলন করুন'}
+                        </p>
+                        
+                        <div style="display: flex; justify-content: center; gap: 50px; margin: 40px 0;">
+                            <div>
+                                <div style="font-size: 48px; font-weight: bold; color: #27ae60;">${this.score}</div>
+                                <div style="color: #666; margin-top: 10px;">আপনার স্কোর</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 48px; font-weight: bold; color: #3498db;">${percentage}%</div>
+                                <div style="color: #666; margin-top: 10px;">সঠিকতার হার</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 48px; font-weight: bold; color: #e74c3c;">${this.questions.length}</div>
+                                <div style="color: #666; margin-top: 10px;">মোট প্রশ্ন</div>
+                            </div>
+                        </div>
+                        
+                        <button onclick="qbManager.showChapters()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px 50px; border-radius: 50px; font-size: 20px; cursor: pointer; margin-top: 20px;">
+                            <i class="fas fa-redo-alt"></i> আবার চেষ্টা করুন
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ১০. ডাটা সোর্স - সাবজেক্ট ও চ্যাপ্টার লিস্ট
+            // ============================================
+            
+            // ক্লাস অনুযায়ী সাবজেক্ট লিস্ট
+            getSubjectsByClass(className) {
+                if (className === 'ssc') {
+                    return [
+                        { folder: 'বাংলা_১ম_পত্র', name: 'বাংলা ১ম পত্র', icon: '📚', chapters: 13, total_questions: 500 },
+                        { folder: 'বাংলা_২য়_পত্র', name: 'বাংলা ২য় পত্র', icon: '📝', chapters: 8, total_questions: 400 },
+                        { folder: 'ইংরেজি_১ম_পত্র', name: 'English 1st Paper', icon: '📖', chapters: 5, total_questions: 400 },
+                        { folder: 'ইংরেজি_২য়_পত্র', name: 'English 2nd Paper', icon: '✍️', chapters: 6, total_questions: 450 },
+                        { folder: 'গণিত', name: 'গণিত', icon: '🧮', chapters: 12, total_questions: 600 },
+                        { folder: 'বিজ্ঞান', name: 'বিজ্ঞান', icon: '🔬', chapters: 10, total_questions: 550 },
+                        { folder: 'বাংলাদেশ_ও_বিশ্বপরিচয়', name: 'বাংলাদেশ ও বিশ্বপরিচয়', icon: '🌍', chapters: 8, total_questions: 400 },
+                        { folder: 'বাংলাদেশের_ইতিহাস_ও_বিশ্বসভ্যতা', name: 'বাংলাদেশের ইতিহাস ও বিশ্বসভ্যতা', icon: '🏛️', chapters: 7, total_questions: 450 },
+                        { folder: 'ভূগোল_ও_পরিবেশ', name: 'ভূগোল ও পরিবেশ', icon: '🗺️', chapters: 6, total_questions: 400 },
+                        { folder: 'অর্থনীতি', name: 'অর্থনীতি', icon: '💰', chapters: 5, total_questions: 350 },
+                        { folder: 'কৃষি_শিক্ষা', name: 'কৃষি শিক্ষা', icon: '🌾', chapters: 6, total_questions: 350 },
+                        { folder: 'জীববিজ্ঞান', name: 'জীববিজ্ঞান', icon: '🧬', chapters: 8, total_questions: 450 },
+                        { folder: 'তথ্য_ও_যোগাযোগ_প্রযুক্তি', name: 'তথ্য ও যোগাযোগ প্রযুক্তি', icon: '💻', chapters: 5, total_questions: 400 },
+                        { folder: 'পৌরনীতি_ও_নাগরিকতা', name: 'পৌরনীতি ও নাগরিকতা', icon: '⚖️', chapters: 5, total_questions: 350 }
+                    ];
+                } else {
+                    return [
+                        { folder: 'পদার্থবিজ্ঞান_১ম_পত্র', name: 'পদার্থবিজ্ঞান ১ম পত্র', icon: '⚡', chapters: 8, total_questions: 500 },
+                        { folder: 'পদার্থবিজ্ঞান_২য়_পত্র', name: 'পদার্থবিজ্ঞান ২য় পত্র', icon: '⚡', chapters: 8, total_questions: 500 },
+                        { folder: 'রসায়ন_১ম_পত্র', name: 'রসায়ন ১ম পত্র', icon: '🧪', chapters: 7, total_questions: 450 },
+                        { folder: 'রসায়ন_২য়_পত্র', name: 'রসায়ন ২য় পত্র', icon: '🧪', chapters: 7, total_questions: 450 },
+                        { folder: 'জীববিজ্ঞান_১ম_পত্র', name: 'জীববিজ্ঞান ১ম পত্র', icon: '🧬', chapters: 6, total_questions: 400 },
+                        { folder: 'জীববিজ্ঞান_২য়_পত্র', name: 'জীববিজ্ঞান ২য় পত্র', icon: '🧬', chapters: 6, total_questions: 400 },
+                        { folder: 'উচ্চতর_গণিত_১ম_পত্র', name: 'উচ্চতর গণিত ১ম পত্র', icon: '📐', chapters: 5, total_questions: 350 },
+                        { folder: 'উচ্চতর_গণিত_২য়_পত্র', name: 'উচ্চতর গণিত ২য় পত্র', icon: '📐', chapters: 5, total_questions: 350 }
+                    ];
+                }
+            }
+            
+            // সাবজেক্ট অনুযায়ী চ্যাপ্টার লিস্ট (ফোল্ডার ভিত্তিক)
+            getChaptersBySubject(subjectFolder) {
+                // বাংলা ১ম পত্রের চ্যাপ্টারসমূহ
+                if (subjectFolder === 'বাংলা_১ম_পত্র') {
+                    return [
+                        { folder: 'আম-আঁটির_ভেঁপু', name: 'আম-আঁটির ভেঁপু', icon: '🥭', questions: 50 },
+                        { folder: 'কপোতাক্ষ_নদ', name: 'কপোতাক্ষ নদ', icon: '🌊', questions: 45 },
+                        { folder: 'মানুষ_মুহম্মদ_(স.)', name: 'মানুষ মুহম্মদ (স.)', icon: '🕊️', questions: 40 },
+                        { folder: 'বই_পড়া', name: 'বই পড়া', icon: '📚', questions: 50 },
+                        { folder: 'সুভা', name: 'সুভা', icon: '👧', questions: 35 },
+                        { folder: 'নিমন্ত্রণ', name: 'নিমন্ত্রণ', icon: '🎭', questions: 30 },
+                        { folder: 'আবার_আসিব_ফিরে', name: 'আবার আসিব ফিরে', icon: '🍂', questions: 35 },
+                        { folder: 'পল্লিজননী', name: 'পল্লিজননী', icon: '🌾', questions: 30 },
+                        { folder: 'বাংলা_মায়ের_ভাষা', name: 'বাংলা মায়ের ভাষা', icon: '🗣️', questions: 25 },
+                        { folder: 'সাহিত্যের_খেলা', name: 'সাহিত্যের খেলা', icon: '🎨', questions: 30 },
+                        { folder: 'মহাজাগতিক_খোঁজে', name: 'মহাজাগতিক খোঁজে', icon: '🚀', questions: 25 },
+                        { folder: 'একাত্তরের_দিনগুলি', name: 'একাত্তরের দিনগুলি', icon: '🇧🇩', questions: 30 },
+                        { folder: 'নৌকাডুবি', name: 'নৌকাডুবি', icon: '⛵', questions: 25 }
+                    ];
+                }
+                
+                // বাংলা ২য় পত্রের চ্যাপ্টারসমূহ
+                if (subjectFolder === 'বাংলা_২য়_পত্র') {
+                    return [
+                        { folder: 'ধ্বনি_ও_বর্ণ', name: 'ধ্বনি ও বর্ণ', icon: '🔤', questions: 40 },
+                        { folder: 'সন্ধি', name: 'সন্ধি', icon: '🔄', questions: 45 },
+                        { folder: 'বিভক্তি_ও_পদ', name: 'বিভক্তি ও পদ', icon: '📑', questions: 35 },
+                        { folder: 'বাক্য_ও_বিভাগ', name: 'বাক্য ও বিভাগ', icon: '💬', questions: 40 },
+                        { folder: 'কারক_ও_বিভক্তি', name: 'কারক ও বিভক্তি', icon: '🔧', questions: 45 },
+                        { folder: 'সমাস', name: 'সমাস', icon: '🤝', questions: 50 },
+                        { folder: 'ধাতু_ও_প্রকৃতি', name: 'ধাতু ও প্রকৃতি', icon: '🌱', questions: 35 },
+                        { folder: 'বিরাম_চিহ্ন', name: 'বিরাম চিহ্ন', icon: '⏸️', questions: 30 }
+                    ];
+                }
+                
+                // অন্যান্য সাবজেক্টের জন্য খালি অ্যারে
+                return [
+                    { folder: 'অধ্যায়_১', name: 'অধ্যায় ১', icon: '📘', questions: 30 },
+                    { folder: 'অধ্যায়_২', name: 'অধ্যায় ২', icon: '📗', questions: 30 },
+                    { folder: 'অধ্যায়_৩', name: 'অধ্যায় ৩', icon: '📙', questions: 30 }
+                ];
+            }
         }
+
+        // ============================================
+        // গ্লোবাল ইনস্ট্যান্স তৈরি
+        // ============================================
+        const qbManager = new QuestionBankManager();
     </script>
 </body>
 </html>
