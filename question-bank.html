@@ -668,6 +668,22 @@
             color: #721c24;
         }
         
+        /* রিভিউ মোড স্টাইল */
+        .review-mode .exam-option {
+            cursor: default;
+        }
+        
+        .review-mode .exam-option:hover {
+            background: #f8f9fa;
+            border-color: #dee2e6;
+        }
+        
+        .review-mode .exam-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
         .exam-footer {
             display: flex;
             justify-content: space-between;
@@ -692,6 +708,64 @@
         .submit-exam-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+        }
+        
+        /* রেজাল্ট সেকশন */
+        .result-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .result-stat {
+            text-align: center;
+        }
+        
+        .result-stat-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .result-stat-label {
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .review-toggle {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .review-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .review-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
         }
         
         /* রেসপনসিভ */
@@ -745,6 +819,24 @@
         .hidden {
             display: none !important;
         }
+        
+        .correct-badge {
+            background: #27ae60;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .wrong-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -783,7 +875,7 @@
         class QuestionBankManager {
             constructor() {
                 // স্টেট ম্যানেজমেন্ট
-                this.currentView = 'classes'; // classes, departments, subjects, chapters, examCustomizer, allInOneExam
+                this.currentView = 'classes'; // classes, departments, subjects, chapters, examCustomizer, allInOneExam, result
                 this.selectedClass = null;
                 this.selectedDepartment = null;
                 this.selectedDepartmentName = null;
@@ -801,6 +893,9 @@
                 this.examScore = 0;
                 this.timer = null;
                 this.timeLeft = 0;
+                
+                // রিভিউ মোড
+                this.reviewMode = false;
                 
                 // কাস্টমাইজেবল পরীক্ষার স্টেট
                 this.customExamQuestions = [];
@@ -1478,12 +1573,14 @@
                 // টাইমার ক্লিয়ার
                 if (this.timer) clearInterval(this.timer);
                 
-                // রেজাল্ট দেখান
-                this.showExamResult(correct);
+                // রেজাল্ট দেখান (উত্তর পর্যালোচনা সহ)
+                this.currentView = 'result';
+                this.showExamResultWithReview(correct);
             }
             
-            showExamResult(correct) {
+            showExamResultWithReview(correct) {
                 const percentage = Math.round((correct / this.questions.length) * 100);
+                const wrong = this.questions.length - correct;
                 
                 this.contentEl.innerHTML = `
                     <header>
@@ -1505,35 +1602,46 @@
                         </div>
                     </header>
                     
-                    <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
-                        <div style="font-size: 100px; margin-bottom: 20px;">
-                            ${percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '📚'}
+                    <div class="result-section">
+                        <div class="result-header">
+                            <div style="font-size: 80px; margin-bottom: 20px;">
+                                ${percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '📚'}
+                            </div>
+                            <h1 style="color: #333; margin-bottom: 15px; font-size: 36px;">
+                                ${percentage >= 80 ? 'অভিনন্দন!' : 'পরীক্ষা শেষ!'}
+                            </h1>
+                            <p style="color: #666; font-size: 20px; margin-bottom: 20px;">
+                                ${percentage >= 80 ? 'চমৎকার ফলাফল!' : 'আরও অনুশীলন করুন'}
+                            </p>
                         </div>
-                        <h1 style="color: #333; margin-bottom: 15px; font-size: 36px;">
-                            ${percentage >= 80 ? 'অভিনন্দন!' : 'পরীক্ষা শেষ!'}
-                        </h1>
-                        <p style="color: #666; font-size: 20px; margin-bottom: 40px;">
-                            ${percentage >= 80 ? 'চমৎকার ফলাফল!' : 'আরও অনুশীলন করুন'}
-                        </p>
                         
-                        <div style="background: #f8f9fa; padding: 30px; border-radius: 16px; margin-bottom: 40px;">
-                            <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
-                                <div>
-                                    <div style="font-size: 48px; font-weight: bold; color: #27ae60;">${correct}</div>
-                                    <div style="color: #666; margin-top: 10px;">সঠিক উত্তর</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 48px; font-weight: bold; color: #3498db;">${percentage}%</div>
-                                    <div style="color: #666; margin-top: 10px;">সঠিকতার হার</div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 48px; font-weight: bold; color: #e74c3c;">${this.questions.length}</div>
-                                    <div style="color: #666; margin-top: 10px;">মোট প্রশ্ন</div>
-                                </div>
+                        <div class="result-stats">
+                            <div class="result-stat">
+                                <div class="result-stat-value" style="color: #27ae60;">${correct}</div>
+                                <div class="result-stat-label">সঠিক উত্তর</div>
+                            </div>
+                            <div class="result-stat">
+                                <div class="result-stat-value" style="color: #e74c3c;">${wrong}</div>
+                                <div class="result-stat-label">ভুল উত্তর</div>
+                            </div>
+                            <div class="result-stat">
+                                <div class="result-stat-value" style="color: #3498db;">${percentage}%</div>
+                                <div class="result-stat-label">সঠিকতার হার</div>
                             </div>
                         </div>
                         
-                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <div class="review-toggle">
+                            <button class="review-btn" onclick="qbManager.toggleReview()">
+                                <i class="fas fa-search"></i> উত্তর পর্যালোচনা করুন
+                            </button>
+                        </div>
+                        
+                        <div id="reviewContainer" style="display: none;">
+                            <h3 style="color: #333; margin-bottom: 20px;">উত্তর পর্যালোচনা</h3>
+                            ${this.renderReviewQuestions()}
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
                             <button class="action-btn primary" onclick="qbManager.startAllInOneExam()">
                                 <i class="fas fa-redo-alt"></i> আবার চেষ্টা করুন
                             </button>
@@ -1543,6 +1651,63 @@
                         </div>
                     </div>
                 `;
+            }
+            
+            renderReviewQuestions() {
+                return this.questions.map((q, index) => {
+                    const userAnswer = this.userAnswers[index];
+                    const isCorrect = userAnswer === q.correct;
+                    
+                    return `
+                        <div class="exam-question" id="review-${index}" style="margin-bottom: 30px;">
+                            <div class="exam-question-header">
+                                <div class="exam-question-number">${index + 1}</div>
+                                <div>
+                                    ${isCorrect ? 
+                                        '<span class="correct-badge"><i class="fas fa-check"></i> সঠিক</span>' : 
+                                        '<span class="wrong-badge"><i class="fas fa-times"></i> ভুল</span>'}
+                                </div>
+                            </div>
+                            <div class="exam-question-text">${q.question}</div>
+                            <div class="exam-options review-mode">
+                                ${q.options.map((opt, optIndex) => {
+                                    let optionClass = 'exam-option';
+                                    if (optIndex === q.correct) {
+                                        optionClass += ' correct';
+                                    }
+                                    if (userAnswer === optIndex && userAnswer !== q.correct) {
+                                        optionClass += ' wrong';
+                                    }
+                                    if (userAnswer === optIndex) {
+                                        optionClass += ' selected';
+                                    }
+                                    return `
+                                        <div class="${optionClass}">
+                                            ${String.fromCharCode(65 + optIndex)}. ${opt}
+                                            ${optIndex === q.correct ? ' ✓' : ''}
+                                            ${userAnswer === optIndex && userAnswer !== q.correct ? ' ✗' : ''}
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            ${q.explanation ? `
+                                <div class="explanation" style="margin-top: 15px;">
+                                    <i class="fas fa-info-circle"></i>
+                                    ব্যাখ্যা: ${q.explanation}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            toggleReview() {
+                const reviewContainer = document.getElementById('reviewContainer');
+                if (reviewContainer.style.display === 'none') {
+                    reviewContainer.style.display = 'block';
+                } else {
+                    reviewContainer.style.display = 'none';
+                }
             }
             
             // ============================================
