@@ -283,6 +283,31 @@
             border: 1px solid #dee2e6;
             border-radius: 8px;
             font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .option-item:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+        
+        .option-item.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .option-item.correct-answer {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .option-item.wrong-answer {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
         }
         
         .correct-answer {
@@ -439,6 +464,7 @@
             border-radius: 8px;
             margin-bottom: 10px;
             border: 1px solid #dee2e6;
+            cursor: pointer;
         }
         
         .preview-item.selected {
@@ -509,6 +535,165 @@
             box-shadow: 0 10px 30px rgba(102,126,234,0.3);
         }
         
+        /* অল-ইন-ওয়ান পরীক্ষার স্টাইল */
+        .all-in-one-exam {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .exam-info {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .exam-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+        }
+        
+        .exam-timer {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        
+        .exam-score {
+            font-size: 28px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .questions-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .exam-question {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .exam-question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .exam-question-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .exam-question-status {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .exam-question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .exam-options {
+            display: grid;
+            gap: 12px;
+        }
+        
+        .exam-option {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        
+        .exam-option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+        
+        .exam-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .exam-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .exam-option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .exam-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .submit-exam-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            border: none;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .submit-exam-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+        }
+        
         /* রেসপনসিভ */
         @media (max-width: 768px) {
             .breadcrumb {
@@ -530,6 +715,11 @@
             
             .customizer-controls {
                 grid-template-columns: 1fr;
+            }
+            
+            .exam-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
 
@@ -587,13 +777,13 @@
 
     <script>
         // ============================================
-        // প্রশ্ন ব্যাংক ম্যানেজার - বিভাগ ভিত্তিক স্ট্রাকচার
+        // প্রশ্ন ব্যাংক ম্যানেজার - অল-ইন-ওয়ান পরীক্ষা সহ
         // ============================================
         
         class QuestionBankManager {
             constructor() {
                 // স্টেট ম্যানেজমেন্ট
-                this.currentView = 'classes'; // classes, departments, subjects, chapters, quiz, questionBank, examCustomizer
+                this.currentView = 'classes'; // classes, departments, subjects, chapters, examCustomizer, allInOneExam
                 this.selectedClass = null;
                 this.selectedDepartment = null;
                 this.selectedDepartmentName = null;
@@ -605,12 +795,12 @@
                 // প্রশ্ন ব্যাংক ভিউ মোড
                 this.showAnswers = false;
                 
-                // কুইজ স্টেট
+                // পরীক্ষার স্টেট
                 this.questions = [];
-                this.currentQuestionIndex = 0;
-                this.score = 0;
+                this.userAnswers = [];
+                this.examScore = 0;
                 this.timer = null;
-                this.timeLeft = 1800;
+                this.timeLeft = 0;
                 
                 // কাস্টমাইজেবল পরীক্ষার স্টেট
                 this.customExamQuestions = [];
@@ -1034,9 +1224,9 @@
                             
                             <div class="control-group">
                                 <label class="control-label">পরীক্ষার সময়</label>
-                                <div class="control-value">৩০ মিনিট</div>
+                                <div class="control-value" id="totalTimeDisplay">${this.selectedQuestionCount} মিনিট</div>
                                 <div style="text-align: center; margin-top: 15px;">
-                                    <span class="timer"><i class="fas fa-clock"></i> 30:00</span>
+                                    <span class="timer"><i class="fas fa-clock"></i> প্রতি প্রশ্নে ১ মিনিট</span>
                                 </div>
                             </div>
                             
@@ -1044,12 +1234,12 @@
                                 <label class="control-label">মার্কিং স্কিম</label>
                                 <div style="display: flex; justify-content: space-around; margin-top: 15px;">
                                     <div style="text-align: center;">
-                                        <div style="font-size: 24px; color: #27ae60;">+4</div>
+                                        <div style="font-size: 24px; color: #27ae60;">+1</div>
                                         <div style="color: #666;">সঠিক</div>
                                     </div>
                                     <div style="text-align: center;">
-                                        <div style="font-size: 24px; color: #e74c3c;">-1</div>
-                                        <div style="color: #666;">ভুল</div>
+                                        <div style="font-size: 24px; color: #e74c3c;">0</div>
+                                        <div style="color: #666;">ভুল/না দেওয়া</div>
                                     </div>
                                 </div>
                             </div>
@@ -1066,8 +1256,8 @@
                             <button class="action-btn secondary" onclick="qbManager.showChapters()">
                                 <i class="fas fa-times"></i> বাতিল করুন
                             </button>
-                            <button class="action-btn primary" onclick="qbManager.startCustomExam()">
-                                <i class="fas fa-play"></i> পরীক্ষা শুরু করুন
+                            <button class="action-btn primary" onclick="qbManager.startAllInOneExam()">
+                                <i class="fas fa-play"></i> অল-ইন-ওয়ান পরীক্ষা শুরু
                             </button>
                         </div>
                     </div>
@@ -1106,6 +1296,7 @@
                 // UI আপডেট
                 document.getElementById('selectedCount').textContent = count;
                 document.getElementById('questionNumber').value = count;
+                document.getElementById('totalTimeDisplay').textContent = count + ' মিনিট';
                 document.getElementById('questionPreview').innerHTML = this.renderQuestionPreview();
             }
             
@@ -1132,49 +1323,283 @@
                 // UI আপডেট
                 document.getElementById('selectedCount').textContent = this.selectedQuestionCount;
                 document.getElementById('questionNumber').value = this.selectedQuestionCount;
+                document.getElementById('totalTimeDisplay').textContent = this.selectedQuestionCount + ' মিনিট';
                 document.getElementById('questionPreview').innerHTML = this.renderQuestionPreview();
             }
             
-            startCustomExam() {
+            // ============================================
+            // ৭. অল-ইন-ওয়ান পরীক্ষা শুরু
+            // ============================================
+            startAllInOneExam() {
                 // সিলেক্ট করা প্রশ্নগুলো নিয়ে পরীক্ষা শুরু করুন
                 this.questions = this.selectedQuestions.map(index => this.customExamQuestions[index]);
-                this.currentQuestionIndex = 0;
-                this.score = 0;
-                this.timeLeft = 1800;
-                this.currentView = 'quiz';
-                this.showQuiz();
+                
+                // ইউজার অ্যানসার অ্যারে ইনিশিয়ালাইজ
+                this.userAnswers = new Array(this.questions.length).fill(null);
+                
+                // টাইমার সেট করুন (প্রতি প্রশ্নের জন্য ১ মিনিট)
+                this.timeLeft = this.questions.length * 60;
+                
+                this.currentView = 'allInOneExam';
+                this.showAllInOneExam();
             }
             
-            // ============================================
-            // ৭. পরীক্ষা শুরু
-            // ============================================
-            async startExam(folder, name) {
-                this.selectedChapter = folder;
-                this.selectedChapterName = name;
-                this.currentView = 'quiz';
-                await this.loadMCQ();
+            showAllInOneExam() {
+                this.startTimer();
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showDepartments()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedDepartmentName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedChapterName}</span>
+                        </div>
+                        <div class="header-info">
+                            <span class="timer" id="timerDisplay">
+                                <i class="fas fa-clock"></i> ${this.formatTime(this.timeLeft)}
+                            </span>
+                            <span class="score" id="scoreDisplay">
+                                <i class="fas fa-star"></i> 0/${this.questions.length}
+                            </span>
+                            <button class="back-btn" onclick="qbManager.submitAllInOneExam()">
+                                <i class="fas fa-check"></i> পরীক্ষা জমা দিন
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <div class="all-in-one-exam">
+                        <div class="exam-header">
+                            <div class="exam-info">
+                                <span class="exam-badge">
+                                    <i class="fas fa-graduation-cap"></i> ${this.selectedClass.toUpperCase()} | ${this.selectedDepartmentName}
+                                </span>
+                                <span class="exam-badge" style="background: #27ae60;">
+                                    <i class="fas fa-book"></i> ${this.selectedSubjectName}
+                                </span>
+                                <span class="exam-badge" style="background: #e67e22;">
+                                    <i class="fas fa-chapter"></i> ${this.selectedChapterName}
+                                </span>
+                            </div>
+                            <div>
+                                <span class="exam-timer" id="largeTimer">${this.formatTime(this.timeLeft)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="questions-container" id="allQuestionsContainer">
+                            ${this.renderAllQuestionsInOne()}
+                        </div>
+                        
+                        <div class="exam-footer">
+                            <div>
+                                <span style="color: #666;">উত্তর দেওয়া হয়েছে: <span id="answeredCount">0</span>/${this.questions.length}</span>
+                            </div>
+                            <button class="submit-exam-btn" onclick="qbManager.submitAllInOneExam()">
+                                <i class="fas fa-check-circle"></i> পরীক্ষা জমা দিন
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
             
-            async loadMCQ() {
-                try {
-                    const filePath = `data/${this.selectedClass}/${this.selectedDepartment}/${this.selectedSubject}/${this.selectedChapter}/mcq.json`;
-                    console.log('লোড হচ্ছে:', filePath);
-                    
-                    const response = await fetch(filePath);
-                    if (!response.ok) throw new Error('MCQ ফাইল পাওয়া যায়নি');
-                    
-                    const data = await response.json();
-                    this.questions = data.questions || [];
-                    this.currentQuestionIndex = 0;
-                    this.score = 0;
-                    this.timeLeft = 1800;
-                    
-                    this.showQuiz();
-                    
-                } catch (error) {
-                    console.error('MCQ লোড করতে সমস্যা:', error);
-                    this.showError('MCQ প্রশ্ন পাওয়া যায়নি!');
+            renderAllQuestionsInOne() {
+                return this.questions.map((q, index) => {
+                    const answered = this.userAnswers[index] !== null;
+                    return `
+                        <div class="exam-question" id="question-${index}">
+                            <div class="exam-question-header">
+                                <div class="exam-question-number">${index + 1}</div>
+                                <div class="exam-question-status">
+                                    ${answered ? '✓ উত্তর দেওয়া হয়েছে' : 'অপেক্ষমাণ'}
+                                </div>
+                            </div>
+                            <div class="exam-question-text">${q.question}</div>
+                            <div class="exam-options" id="options-${index}">
+                                ${q.options.map((opt, optIndex) => `
+                                    <div class="exam-option ${this.userAnswers[index] === optIndex ? 'selected' : ''}" 
+                                         onclick="qbManager.selectAnswer(${index}, ${optIndex})">
+                                        ${String.fromCharCode(65 + optIndex)}. ${opt}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            selectAnswer(questionIndex, optionIndex) {
+                // আগের সিলেকশন রিমুভ
+                if (this.userAnswers[questionIndex] === optionIndex) {
+                    // একই অপশনে ক্লিক করলে আনসিলেক্ট
+                    this.userAnswers[questionIndex] = null;
+                } else {
+                    // নতুন উত্তর সিলেক্ট
+                    this.userAnswers[questionIndex] = optionIndex;
                 }
+                
+                // UI আপডেট
+                const optionsContainer = document.getElementById(`options-${questionIndex}`);
+                if (optionsContainer) {
+                    const options = optionsContainer.querySelectorAll('.exam-option');
+                    options.forEach((opt, idx) => {
+                        if (this.userAnswers[questionIndex] === idx) {
+                            opt.classList.add('selected');
+                        } else {
+                            opt.classList.remove('selected');
+                        }
+                    });
+                }
+                
+                // উত্তর দেওয়ার সংখ্যা আপডেট
+                const answeredCount = this.userAnswers.filter(a => a !== null).length;
+                document.getElementById('answeredCount').textContent = answeredCount;
+            }
+            
+            submitAllInOneExam() {
+                // উত্তর গণনা
+                let correct = 0;
+                this.questions.forEach((q, index) => {
+                    if (this.userAnswers[index] === q.correct) {
+                        correct++;
+                    }
+                });
+                
+                // স্কোর (১ নম্বর করে)
+                this.examScore = correct;
+                
+                // প্রগ্রেস আপডেট
+                this.updateProgress(correct, this.questions.length - correct);
+                
+                // টাইমার ক্লিয়ার
+                if (this.timer) clearInterval(this.timer);
+                
+                // রেজাল্ট দেখান
+                this.showExamResult(correct);
+            }
+            
+            showExamResult(correct) {
+                const percentage = Math.round((correct / this.questions.length) * 100);
+                
+                this.contentEl.innerHTML = `
+                    <header>
+                        <div class="breadcrumb">
+                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showDepartments()">${this.selectedClass.toUpperCase()}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showSubjects()">${this.selectedDepartmentName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>${this.selectedChapterName}</span>
+                        </div>
+                        <div class="header-info">
+                            <button class="back-btn" onclick="qbManager.showChapters()">
+                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
+                            </button>
+                        </div>
+                    </header>
+                    
+                    <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
+                        <div style="font-size: 100px; margin-bottom: 20px;">
+                            ${percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '📚'}
+                        </div>
+                        <h1 style="color: #333; margin-bottom: 15px; font-size: 36px;">
+                            ${percentage >= 80 ? 'অভিনন্দন!' : 'পরীক্ষা শেষ!'}
+                        </h1>
+                        <p style="color: #666; font-size: 20px; margin-bottom: 40px;">
+                            ${percentage >= 80 ? 'চমৎকার ফলাফল!' : 'আরও অনুশীলন করুন'}
+                        </p>
+                        
+                        <div style="background: #f8f9fa; padding: 30px; border-radius: 16px; margin-bottom: 40px;">
+                            <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+                                <div>
+                                    <div style="font-size: 48px; font-weight: bold; color: #27ae60;">${correct}</div>
+                                    <div style="color: #666; margin-top: 10px;">সঠিক উত্তর</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 48px; font-weight: bold; color: #3498db;">${percentage}%</div>
+                                    <div style="color: #666; margin-top: 10px;">সঠিকতার হার</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 48px; font-weight: bold; color: #e74c3c;">${this.questions.length}</div>
+                                    <div style="color: #666; margin-top: 10px;">মোট প্রশ্ন</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                            <button class="action-btn primary" onclick="qbManager.startAllInOneExam()">
+                                <i class="fas fa-redo-alt"></i> আবার চেষ্টা করুন
+                            </button>
+                            <button class="action-btn secondary" onclick="qbManager.customizeExam('${this.selectedChapter}', '${this.selectedChapterName}')">
+                                <i class="fas fa-pen"></i> পুনরায় কাস্টমাইজ
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // ============================================
+            // ৮. টাইমার ফাংশন
+            // ============================================
+            startTimer() {
+                if (this.timer) clearInterval(this.timer);
+                
+                this.timer = setInterval(() => {
+                    this.timeLeft--;
+                    
+                    // টাইমার আপডেট
+                    const timerDisplay = document.getElementById('timerDisplay');
+                    const largeTimer = document.getElementById('largeTimer');
+                    
+                    if (timerDisplay) {
+                        timerDisplay.innerHTML = `<i class="fas fa-clock"></i> ${this.formatTime(this.timeLeft)}`;
+                    }
+                    
+                    if (largeTimer) {
+                        largeTimer.textContent = this.formatTime(this.timeLeft);
+                    }
+                    
+                    if (this.timeLeft <= 0) {
+                        clearInterval(this.timer);
+                        this.submitAllInOneExam();
+                    }
+                }, 1000);
+            }
+            
+            formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+            
+            // ============================================
+            // ৯. প্রগ্রেস আপডেট
+            // ============================================
+            updateProgress(correct, wrong) {
+                let progress = localStorage.getItem('admissionTestHelpline');
+                progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
+                
+                progress.solved = (progress.solved || 0) + (correct + wrong);
+                progress.correct = (progress.correct || 0) + correct;
+                progress.tests = (progress.tests || 0) + 1;
+                
+                localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
+            }
+            
+            loadProgress() {
+                const progress = localStorage.getItem('admissionTestHelpline');
+                if (progress) {}
+            }
+            
+            getTotalQuestions() {
+                return '৫০,০০০+';
             }
             
             showError(message) {
@@ -1207,218 +1632,8 @@
                 `;
             }
             
-            showQuiz() {
-                this.startTimer();
-                
-                this.contentEl.innerHTML = `
-                    <header>
-                        <div class="breadcrumb">
-                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showDepartments()">${this.selectedClass.toUpperCase()}</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showSubjects()">${this.selectedDepartmentName}</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <span>${this.selectedChapterName}</span>
-                        </div>
-                        <div class="header-info">
-                            <span class="timer" id="timerDisplay">
-                                <i class="fas fa-clock"></i> 30:00
-                            </span>
-                            <span class="score" id="scoreDisplay">
-                                <i class="fas fa-star"></i> স্কোর: 0
-                            </span>
-                            <button class="back-btn" onclick="qbManager.endQuiz()">
-                                <i class="fas fa-times"></i> পরীক্ষা শেষ
-                            </button>
-                        </div>
-                    </header>
-
-                    <div class="quiz-panel">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                            <div style="font-size: 20px; color: #333; background: #f8f9fa; padding: 10px 20px; border-radius: 50px;">
-                                <i class="fas fa-question-circle" style="color: #667eea;"></i>
-                                প্রশ্ন ${this.currentQuestionIndex + 1}/${this.questions.length}
-                            </div>
-                            <div style="font-size: 18px; color: #27ae60; background: #f8f9fa; padding: 10px 20px; border-radius: 50px;">
-                                <i class="fas fa-check-circle"></i> +4 | <span style="color: #e74c3c;">-1</span>
-                            </div>
-                        </div>
-
-                        <div id="questionContainer">
-                            ${this.renderCurrentQuestion()}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            renderCurrentQuestion() {
-                if (this.questions.length === 0) {
-                    return '<p style="text-align: center; color: #999;">কোনো প্রশ্ন নেই</p>';
-                }
-                
-                const q = this.questions[this.currentQuestionIndex];
-                
-                return `
-                    <div>
-                        <h3 style="font-size: 24px; color: #333; margin-bottom: 30px; line-height: 1.6;">
-                            ${this.currentQuestionIndex + 1}. ${q.question}
-                        </h3>
-                        
-                        <div style="display: grid; gap: 15px;">
-                            ${q.options.map((opt, index) => `
-                                <div class="option" onclick="qbManager.checkAnswer(${index})">
-                                    ${String.fromCharCode(65 + index)}. ${opt}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            checkAnswer(selectedIndex) {
-                const q = this.questions[this.currentQuestionIndex];
-                const options = document.querySelectorAll('.option');
-                
-                options.forEach(opt => opt.style.pointerEvents = 'none');
-                
-                if (q.correct !== undefined && options[q.correct]) {
-                    options[q.correct].classList.add('correct');
-                }
-                
-                if (selectedIndex === q.correct) {
-                    this.score += 4;
-                    this.updateProgress(true);
-                } else {
-                    if (options[selectedIndex]) {
-                        options[selectedIndex].classList.add('wrong');
-                    }
-                    this.score -= 1;
-                    this.updateProgress(false);
-                }
-                
-                document.getElementById('scoreDisplay').innerHTML = `<i class="fas fa-star"></i> স্কোর: ${this.score}`;
-                
-                setTimeout(() => {
-                    if (this.currentQuestionIndex + 1 < this.questions.length) {
-                        this.currentQuestionIndex++;
-                        const questionContainer = document.getElementById('questionContainer');
-                        if (questionContainer) {
-                            questionContainer.innerHTML = this.renderCurrentQuestion();
-                            document.querySelector('.quiz-panel div:first-child div:first-child').innerHTML = 
-                                `<i class="fas fa-question-circle" style="color: #667eea;"></i> প্রশ্ন ${this.currentQuestionIndex + 1}/${this.questions.length}`;
-                        }
-                    } else {
-                        this.endQuiz();
-                    }
-                }, 1500);
-            }
-            
-            startTimer() {
-                if (this.timer) clearInterval(this.timer);
-                
-                this.timer = setInterval(() => {
-                    this.timeLeft--;
-                    const minutes = Math.floor(this.timeLeft / 60);
-                    const seconds = this.timeLeft % 60;
-                    
-                    const timerDisplay = document.getElementById('timerDisplay');
-                    if (timerDisplay) {
-                        timerDisplay.innerHTML = `<i class="fas fa-clock"></i> ${minutes}:${seconds.toString().padStart(2, '0')}`;
-                    }
-                    
-                    if (this.timeLeft <= 0) {
-                        clearInterval(this.timer);
-                        this.endQuiz();
-                    }
-                }, 1000);
-            }
-            
-            updateProgress(isCorrect) {
-                let progress = localStorage.getItem('admissionTestHelpline');
-                progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
-                
-                progress.solved = (progress.solved || 0) + 1;
-                if (isCorrect) progress.correct = (progress.correct || 0) + 1;
-                
-                localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
-            }
-            
-            loadProgress() {
-                const progress = localStorage.getItem('admissionTestHelpline');
-                if (progress) {}
-            }
-            
-            getTotalQuestions() {
-                return '৫০,০০০+';
-            }
-            
-            endQuiz() {
-                clearInterval(this.timer);
-                
-                let progress = localStorage.getItem('admissionTestHelpline');
-                progress = progress ? JSON.parse(progress) : { solved: 0, correct: 0, tests: 0 };
-                progress.tests = (progress.tests || 0) + 1;
-                localStorage.setItem('admissionTestHelpline', JSON.stringify(progress));
-                
-                const percentage = this.questions.length > 0 
-                    ? Math.round((this.score / (this.questions.length * 4)) * 100) : 0;
-                
-                this.contentEl.innerHTML = `
-                    <header>
-                        <div class="breadcrumb">
-                            <a onclick="qbManager.showClasses()">প্রশ্ন ব্যাংক</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showDepartments()">${this.selectedClass.toUpperCase()}</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showSubjects()">${this.selectedDepartmentName}</a>
-                            <i class="fas fa-chevron-right"></i>
-                            <a onclick="qbManager.showChapters()">${this.selectedSubjectName}</a>
-                        </div>
-                        <div class="header-info">
-                            <button class="back-btn" onclick="qbManager.showChapters()">
-                                <i class="fas fa-arrow-left"></i> অধ্যায়ে ফিরে যান
-                            </button>
-                        </div>
-                    </header>
-                    
-                    <div style="text-align: center; padding: 60px; background: white; border-radius: 20px;">
-                        <div style="font-size: 100px; margin-bottom: 20px;">
-                            ${percentage >= 80 ? '🏆' : percentage >= 60 ? '🎉' : '📚'}
-                        </div>
-                        <h1 style="color: #333; margin-bottom: 15px; font-size: 36px;">
-                            ${percentage >= 80 ? 'অভিনন্দন!' : 'পরীক্ষা শেষ!'}
-                        </h1>
-                        <p style="color: #666; font-size: 20px; margin-bottom: 40px;">
-                            ${percentage >= 80 ? 'চমৎকার ফলাফল!' : 'আরও অনুশীলন করুন'}
-                        </p>
-                        
-                        <div style="display: flex; justify-content: center; gap: 50px; margin: 40px 0;">
-                            <div>
-                                <div style="font-size: 48px; font-weight: bold; color: #27ae60;">${this.score}</div>
-                                <div style="color: #666; margin-top: 10px;">আপনার স্কোর</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 48px; font-weight: bold; color: #3498db;">${percentage}%</div>
-                                <div style="color: #666; margin-top: 10px;">সঠিকতার হার</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 48px; font-weight: bold; color: #e74c3c;">${this.questions.length}</div>
-                                <div style="color: #666; margin-top: 10px;">মোট প্রশ্ন</div>
-                            </div>
-                        </div>
-                        
-                        <button onclick="qbManager.showChapters()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px 50px; border-radius: 50px; font-size: 20px; cursor: pointer; margin-top: 20px;">
-                            <i class="fas fa-redo-alt"></i> আবার চেষ্টা করুন
-                        </button>
-                    </div>
-                `;
-            }
-            
             // ============================================
-            // ৮. ডাটা সোর্স - ক্লাস, বিভাগ, সাবজেক্ট
+            // ১০. ডাটা সোর্স - ক্লাস, বিভাগ, সাবজেক্ট
             // ============================================
             
             getDepartmentsByClass(className) {
